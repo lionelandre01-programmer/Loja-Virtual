@@ -1,0 +1,212 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family: sans-serif;
+    color: black;
+}
+
+header div span{
+    font-size: 1rem;
+    padding-bottom: 1rem;
+    width: 10%;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 5px;
+}
+
+header div p{
+    width: 10%;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+
+header{
+    height: 100%;
+    width: 100%;
+    background-color: goldenrod;
+}
+
+header div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    text-align: center;
+    padding: 1% 2%;
+}
+
+button{
+    width: 23%;
+    padding: 1%;
+    border-radius: 1rem;
+    border: 1px solid black;
+}
+
+.btn-cadastrar-produto{
+    margin-bottom: 2%;
+    border-radius: 0.5rem;
+}
+
+main{
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    padding: 2%;
+}
+
+footer{
+    width: 100vw;
+    height: 50vh;
+    background-color: rgb(64, 64, 64);
+}
+
+.div-footer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.div-footer div{
+    width: 45%;
+    height: 45%;
+    text-align: center;
+    border-top: 2px solid black;
+    color: aliceblue;
+}
+
+.div-footer div p a{
+    color: aliceblue;
+}
+
+.produtos{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.one_produto{
+    width: 30%;
+    height: 30rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+.one_produto .image{
+    width: 100%;
+    height: 70%;
+}
+
+.one_produto .image img{
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.content-image{
+    height: 17%;
+    width: 100%;
+    padding: 4%;
+    font-size: 17px;
+    margin-bottom: 0;
+}
+
+.one_produto form{
+    margin-top: 0;
+    padding: 0;
+    height: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1%;
+}
+
+.one_produto form .submit{
+    margin-top: 2%;
+    width: 50%;
+    background-color: goldenrod;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 1%;
+}
+
+.btn-produto{
+    width: 100%;
+    height: 13%;
+    padding: 1.5%;
+}
+
+.btn-produto button{
+    width: 30%;
+    height: 90%;
+    border-radius: 5px;
+}
+
+.botao{
+    background-color: none;
+}
+
+.botao.ativo{
+    background-color: gold;
+}
+
+/*Estilizando a Sessão das Roupeiro Masculino*/
+
+.category{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2%;
+    gap: 1%;
+}
+
+.category button{
+    width: 19%;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    margin-top: 1%;
+}
+
+@media(max-width: 768px){
+
+    header div h1{
+        font-size: 1.3rem;
+    }
+
+    header div p, header div span, header div button{
+        width: 30%;
+        border-radius: 0.5rem;
+    }
+
+    .one_produto{
+        width: 45%;
+        height: 30rem;
+    }
+
+    .one_produto .image{
+        height: 55%;
+    }
+
+    .content-image{
+        height: 33%;
+    }
+
+}
