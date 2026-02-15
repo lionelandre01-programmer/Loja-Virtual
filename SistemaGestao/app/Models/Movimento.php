@@ -16,7 +16,7 @@ class Movimento extends Model
         'movimento', 
         'objecto', 
         'descricao'
-        ]
+    ];
 
     public function user(): BelongsTo
     {

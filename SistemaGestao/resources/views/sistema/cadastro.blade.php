@@ -90,7 +90,7 @@
             <label for="last_name">Último Nome</label>
             <input type="text" name="last_name" id="last_name" required>
 
-            <label for="email">Gênero</label>
+            <label for="email">E-Mail</label>
             <input type="email" name="email" id="email" required>
 
             <label for="role">Função</label>

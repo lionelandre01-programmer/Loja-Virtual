@@ -6,6 +6,7 @@ use App\Models\Carrinho;
 use App\Models\Produto;
 use App\Models\User;
 use App\Models\CarrinhoItem;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,37 +18,40 @@ class CarrinhoController extends Controller
     public function index()
     {
         if (CarrinhoItem::exists()){
-            if (CarrinhoItem::where('status','activo')->exists()){
+            
+            if (CarrinhoItem::where('status','activo')->exists() && Carrinho::where('user_id', Auth()->id())->exists()){
 
-                $items = CarrinhoItem::where('status','activo')->get();
+                $carrinho = Carrinho::where('user_id', Auth()->id())->first();
+                $items = CarrinhoItem::where('carrinho_id', $carrinho->id)->where('status','activo')->get();
 
             }else{
 
                 $items = [];
+                $carrinho = null;
             }
 
         }else{
 
             $items = [];
+            $carrinho = null;
         }
 
-        return view('cliente/carrinho',['items' => $items]);
+        return view('cliente/carrinho',['items' => $items, 'carrinho' => $carrinho]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function adicionar(Request $request, $id)
+    public function adicionar(Request $request)
     {
-        if (Carrinho::where('user_id', $id)->exists()){
+        if (Carrinho::where('user_id', Auth()->id())->exists()){
 
-            $carrinho = Carrinho::where('user_id', $id)->first();
+            $carrinho = Carrinho::where('user_id', Auth()->id())->first();
 
         }else{
 
-            $user = User::where('id',$id)->first();
             $carrinho = new Carrinho;
-            $carrinho->user_id = $user->id;
+            $carrinho->user_id = Auth()->id();
             $carrinho->save();
 
         }
@@ -66,7 +70,9 @@ class CarrinhoController extends Controller
             $items->produto_id = $produto->id;
             $items->quantidade = $request->quantidade;
             $items->preco = $produto->price;
+            $carrinho->total = (float) $carrinho->total + ($request->quantidade * $produto->price);
             $items->save();
+            $carrinho->save();
 
             return redirect()->back()->with('success' ,'Produto Adicionado Ao Carrinho');
         }
@@ -79,26 +85,27 @@ class CarrinhoController extends Controller
     public function alterForm($id)
     {
         $produto = Produto::find($id);
-        $user = User::find(Auth::user()->id);
-        $carrinho = Carrinho::find($user->id);
+        $carrinho = Carrinho::where('user_id', Auth()->id())->first();
 
-        $items = CarrinhoItem::where('carrinho_id', $carrinho->id)->where('produto_id', $produto->id)->where('status', 'activo');
+        $items = CarrinhoItem::where('carrinho_id', $carrinho->id)
+        ->where('produto_id', $id)->where('status', 'activo')->first();
         $quantidade = $items->quantidade;
 
-        return view('cliente/alter', ['produto' => $produto, 'quantidade' => $quantidades]);
+        return view('cliente/alter', ['produto' => $produto, 'quantidade' => $quantidade]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function alter(Request $request, $id)
+    public function alter(Request $request)
     {
-        $user = User::find($id);
-        $carrinho = Carrinho::where('user_id', $user->id);
+        $carrinho = Carrinho::where('user_id', Auth()->id())->first();
         $produto = Produto::find($request->produto);
-        $items = CarrinhoItem::where('carrinho_id', $carrinho->id)->where('produto_id', $produto->id);
+        $items = CarrinhoItem::where('carrinho_id', $carrinho->id)->where('produto_id', $produto->id)->where('status', 'activo')->first();
         $items->quantidade = $request->quantidade;
+        $carrinho = $carrinho->total + ($request->quantidade * $produto->price);
         $items->save();
+        $carrinho->save();
 
         return redirect()->route('carrinho');
     }
@@ -106,9 +113,11 @@ class CarrinhoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Carrinho $carrinho)
+    public function destroy($id)
     {
-        //
+        $item = CarrinhoItem::find($id);
+        $item->delete();
+        return redirect()->back()->with('success','Produto Removido Do Carrinho!');
     }
 
     /**
@@ -122,8 +131,4 @@ class CarrinhoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Carrinho $carrinho)
-    {
-        //
-    }
 }

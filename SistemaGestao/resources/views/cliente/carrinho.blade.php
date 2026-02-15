@@ -47,10 +47,35 @@
             border-collapse: collapse;
         }
 
+        div{
+            width: 100%;
+            height: auto;
+            padding: 2%;
+            text-align: end;
+        }
+
+        form{
+            height: 40vh;
+            padding: 2%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: start;
+        }
+
         @media(max-width: 768px){
 
             header{
                 padding: 10%;
+            }
+
+            .alter{
+                margin-bottom: 0.5rem;
+            }
+
+            .category{
+                display: none;
             }
 
         }
@@ -62,13 +87,29 @@
         <h3><a href="{{ route('loja') }}">Voltar</a></h3>
     </header>
 
+    @if (session('success'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgb(133, 249, 133), rgb(161, 247, 161), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%; text-align: start;">
+            <h3>{{ session('success') }}</h3>
+        </div>
+        
+    @elseif(session('error'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgba(239, 106, 106, 1), rgba(241, 145, 145, 1), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%; text-align: start;">
+            <h3>{{ session('error') }}</h3>
+        </div>
+
+    @endif
+
     <main>
         <div style="width: 95%; height: 80vh;">
             <table>
                 <caption>CARRINHO DE COMPRAS</caption>
                 <tr>
                     <th>Produto</th>
-                    <th>Categoria</th>
+                    <th class="category">Categoria</th>
                     <th>Quantidade</th>
                     <th>Acções</th>
                 </tr>
@@ -76,16 +117,18 @@
 
                     <tr>
                         <td>{{ $item->produto->name }}</td>
-                        <td>{{ $item->produto->category }}</td>
+                        <td class="category">{{ $item->produto->categoria->name }}</td>
                         <td>{{ $item->quantidade }}</td>
                         <td>
-                            <button style="padding: 1% 2%; border: 1px solid black; background-color: gold; border-radius: 5px;">
+                            <button style="padding: 1% 2%; border: 1px solid black; background-color: gold; border-radius: 5px;" class="alter">
                                 <a href="{{ route('alterForm', $item->produto->id) }}">Alterar</a>
                             </button>
 
-                            <button style="padding: 1% 2%; border: 1px solid black; background-color: red; border-radius: 5px;">
-                                <a href="#">Remover</a>
-                            </button>
+                            <form action="{{ route('deleteItem', $item->id) }}" method="POST" style="width: 45%; display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" value="Remover" style="padding: 1% 2%; border: 1px solid black; background-color: red; border-radius: 5px;">
+                            </form>
                         </td>
                     </tr>
 
@@ -98,9 +141,40 @@
                 @endforelse
             </table>
 
-            <div style="width: 100%; height: 5vh; display: flex; justify-content: end;">
-                <button style="height: 100%; width: 20%; border: 1px solid black; background-color: goldenrod; border-radius: 5px;">Finalizar Compra</button>
-            </div>
+            @if (is_object($carrinho))
+
+                @if ( $carrinho->total != null)
+
+                    <div>
+                        <h2>Total: {{ number_format($carrinho->total, 2, ',','.') }}kz</h2>
+                    </div>
+
+                @endif
+            
+            @else
+
+                <div style="display: none;">
+                    <h2>Total: {{ ($carrinho) }}kz</h2>
+                </div>
+
+            @endif
+
+            <form action="{{ route('encomendar') }}" method="POST">
+                @csrf
+
+                <span style="color: red;">
+                    Atenção: Caso queira uma entrega ao domicílio, informe o seu endereço a baixo. <br>
+                    Caso deseje levantar o(s) produto(s) em uma das nossas lojas, deixe o campo a 
+                    baixo em branco!
+                </span>
+
+                <label for="adress">Endreço De Entrega</label>
+                <textarea name="endereco" id="adress" placeholder="Informe aqui seu endereço" rows="5"></textarea>
+
+                <button type="submit" style="height: 20%; width: 25%; border: 1px solid black; background-color: goldenrod; border-radius: 5px;">Finalizar Compra</button>
+
+            </form>
+            
         </div>
     </main>
 </body>

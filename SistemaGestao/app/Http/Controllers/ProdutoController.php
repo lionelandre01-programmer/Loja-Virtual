@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -20,6 +21,7 @@ class ProdutoController extends Controller
      */
     public function loja()
     {
+
         $produtos = Produto::all();
         return view('produto/produto', ['produtos' => $produtos]);
     }
@@ -29,7 +31,8 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        return view('produto/create');
+        $categorias = Categoria::all();
+        return view('produto/create',['categorias' => $categorias]);
     }
 
     /**
@@ -43,6 +46,7 @@ class ProdutoController extends Controller
         $produto->price = $request->price;
         $produto->category = $request->category;
         $produto->genero = $request->genero;
+        $produto->quantity = $request->quantity;
         $produto->description = $request->description;
         
         //upload da imagem
@@ -139,19 +143,25 @@ class ProdutoController extends Controller
 
     public function joias()
     {
-        $produtos = Produto::Where('category','joia')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'joia');
+        })->get();
         return view('produto/joias', ['produtos' => $produtos]);  
     }
 
     public function joias_masc()
     {
-        $produtos = Produto::Where('category','joia')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'joia');
+        })->where('genero','masculino')->get();
         return view('produto/joias', ['produtos' => $produtos]);  
     }
 
     public function joias_femi()
     {
-        $produtos = Produto::Where('category','joia')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'joia');
+        })->where('genero','feminino')->get();
         return view('produto/joias', ['produtos' => $produtos]);  
     }
 
@@ -161,61 +171,81 @@ class ProdutoController extends Controller
 
     public function joias_masculinas()
     {
-        $produtos = Produto::Where('category','joia')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'joia');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function camisas()
     {
-        $produtos = Produto::Where('category','camisa')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'camisa');
+        })->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function calcas_masculinas()
     {
-        $produtos = Produto::Where('category','calça')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'calça');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function carteiras_masculinas()
     {
-        $produtos = Produto::Where('category','carteira')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'carteira');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function chinelos_masculinas()
     {
-        $produtos = Produto::Where('category','chinelo')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'chinelo');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function chapeus_masculinas()
     {
-        $produtos = Produto::Where('category','chapeu')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'chapeu');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function calcados_masculinas()
     {
-        $produtos = Produto::Where('category','calçado')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'calçado');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function mochilas_masculinas()
     {
-        $produtos = Produto::Where('category','mochila')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'mochila');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function casacos_masculinas()
     {
-        $produtos = Produto::Where('category','casaco')->where('genero','masculino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'casaco');
+        })->where('genero','masculino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
     public function macacoes_masculinas()
     {
-        $produtos = Produto::Where('category','macacao')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'macacao');
+        })->where('genero','feminino')->get();
         return view('produto/masculino', ['produtos' => $produtos]);
     }
 
@@ -223,61 +253,81 @@ class ProdutoController extends Controller
 
     public function joias_femininas()
     {
-        $produtos = Produto::Where('category','joia')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'joia');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function blusas()
     {
-        $produtos = Produto::Where('category','blusa')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'blusa');
+        })->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function calcas_femininas()
     {
-        $produtos = Produto::Where('category','calça')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'calça');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function carteiras_femininas()
     {
-        $produtos = Produto::Where('category','carteira')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'carteira');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function chinelos_femininas()
     {
-        $produtos = Produto::Where('category','chinelo')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'chinelo');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function chapeus_femininas()
     {
-        $produtos = Produto::Where('category','chapeu')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'chapeu');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function calcados_femininas()
     {
-        $produtos = Produto::Where('category','calçado')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'calçado');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function mochilas_femininas()
     {
-        $produtos = Produto::Where('category','mochila')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'mochila');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function casacos_femininas()
     {
-        $produtos = Produto::Where('category','casaco')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'casaco');
+        })->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
     public function macacoes_femininas()
     {
-        $produtos = Produto::Where('category','macacao')->orWhere('category','vestido')->where('genero','feminino')->get();
+        $produtos = Produto::Where('category', function ($query){
+            $query->select('id')->from('categorias')->where('name', 'macacao');
+        })->orWhere('category','vestido')->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 

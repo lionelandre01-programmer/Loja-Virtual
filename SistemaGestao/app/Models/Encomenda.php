@@ -4,13 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Encomenda extends Model
 {
-    protected $fillable = ['user_id', 'estado', 'total']
+    protected $fillable = ['user_id', 'estado', 'total','endereco'];
 
     public function items(): HasMany
     {
         return $this->hasMany(EncomendaItems::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -120,7 +120,7 @@
                     <h3>Código: {{ $produto->id }}</h3>
                     <h3>Produto: {{ $produto->name }}</h3>
                     <h3>Preço: {{ number_format($produto->price, 2, ',','.') }}kz</h3>
-                    <h3>Categoria: {{ $produto->category }}</h3>
+                    <h3>Categoria: {{ $produto->categoria->name }}</h3>
                     <h3>Gênero: {{ $produto->genero }}</h3>
                 </div>
             </div>
@@ -135,13 +135,13 @@
         
         </div>
             
-        <form action="{{ route('alter', Auth::user()->id) }}" method="POST">
+        <form action="{{ route('alter') }}" method="POST">
             @csrf
 
             <input type="hidden" name="produto" value="{{ $produto->id }}" readonly>
 
             <label for="quantidade">Quandidade a Comprar</label>
-            <input type="number" name="quantidade" id="quantidade" min="1" max="10" value="{{ $quantidade }}" required>
+            <input type="number" name="quantidade" id="quantidade" min="1" max="{{ $produto->quantity }}" value="{{ $quantidade }}" required>
 
             <button type="submit">Actualizar</button>
 

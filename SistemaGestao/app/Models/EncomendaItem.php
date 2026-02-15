@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Encomenda extends Model
+class EncomendaItem extends Model
 {
-    protected $fillable = ['encomenda_id', 'produto_id', 'quantidade', 'preco']
+    protected $fillable = ['encomenda_id', 'produto_id', 'quantidade', 'preco'];
 
     public function encomenda(): BelongsTo
     {
@@ -16,6 +16,6 @@ class Encomenda extends Model
 
     public function produto(): BelongsTo
     {
-        return $this->belongsTo(Produto::class);
+        return $this->belongsTo(Produto::class, 'produto_id', 'id');
     }
 }

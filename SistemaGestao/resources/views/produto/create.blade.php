@@ -47,11 +47,25 @@
         }
 
         form input, form select{
-            height: 10%;
+            height: 8%;
         }
 
         textarea{
             height: 15%;
+        }
+
+        div{
+            width: 100%;
+            height: auto;
+            display: flex;
+            gap: 5%;
+            padding: 1%;
+        }
+
+        button{
+            padding: 1%;
+            margin-bottom: 2%;
+            border-radius: 0.5rem;
         }
 
         @media(max-width: 768px){
@@ -73,7 +87,18 @@
         <h3><a href="{{ route('loja') }}">Voltar</a></h3>
     </header>
 
+    <div>
+        <button>
+            <a href="{{ route('createCategoria') }}" style="color: black;">Cadastrar Categoria</a>
+        </button>
+
+        <button>
+            <a href="{{ route('showCategoria') }}" style="color: black;">Visualizar Categorias</a>
+        </button>
+    </div>
+
     <main>
+
         <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label for="name">Produto</label>
@@ -81,6 +106,9 @@
             
             <label for="price">Preço</label>
             <input type="number" name="price" id="price" required>
+
+            <label for="quantity">Quantidade</label>
+            <input type="number" name="quantity" id="quantity" min="1" required>
 
             <label for="genero">Gênero</label>
             <select name="genero" id="genero">
@@ -90,18 +118,9 @@
 
             <label for="category">Categoria</label>
             <select name="category" id="category">
-                <option value="calça">Calça</option>
-                <option value="camisa">Camisa</option>
-                <option value="carteira">Carteira</option>
-                <option value="chinelo">Chinelo</option>
-                <option value="joia">Joía</option>
-                <option value="chapeu">Chapéu</option>
-                <option value="calçado">Calçado</option>
-                <option value="mochila">Mochila</option>
-                <option value="blusa">Blusa</option>
-                <option value="casaco">Casaco</option>
-                <option value="vestido">Vestido</option>
-                <option value="macacao">Macacão</option>
+                @foreach( $categorias as $categoria )
+                    <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
+                @endforeach
             </select>
 
             <label for="description">Descrição</label>

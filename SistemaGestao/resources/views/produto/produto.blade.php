@@ -2,9 +2,21 @@
 
 @section('content')
 
-<button class="btn-cadastrar-produto">
-    <a href="{{ route('create') }}" style="color: black;">Cadastrar Produto</a>
-</button>
+<div style="display: flex; width: 100%; height: auto; padding: 1%; gap: 2%;">
+
+    @if (Auth::user()->role != 'cliente')
+
+    <button class="btn-cadastrar-produto">
+        <a href="{{ route('create') }}" style="color: black;">Cadastrar Produto</a>
+    </button>
+
+    @endif
+
+    <button class="btn-cadastrar-produto">
+        <a href="{{ route('encomendas') }}" style="color: black;">Ver Encomendas</a>
+    </button>
+
+</div>
 
 @if (session('success'))
 
@@ -38,7 +50,7 @@
         </div>
 
         @if (Auth::user()->role == 'cliente')
-            <form action="{{ route('adicionar', Auth::user()->id) }}" method="POST">
+            <form action="{{ route('adicionar') }}" method="POST">
                 @csrf
                 <input type="hidden" name="produto" value="{{ $produto->id }}" readonly>
                 <input type="hidden" id="quantidade" name="quantidade" value="1" readonly>

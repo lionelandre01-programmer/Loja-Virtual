@@ -37,7 +37,7 @@
                 <li><button><a href="#" style="color: black;">HOME</a></button></li>
                 <li><button><a href="{{ route('loja') }}" style="color: black;">LOJA</a></button></li>
                 <li><button><a href="#support" style="color: black;">SUPPORT</a></button></li>
-                <li><button><a href="{{ route('logout') }}" style="color: black;">TERMINAR SESSÃO</a></button></li>
+                <li><button onclick="return alert('Deseja Sair?')"><a href="{{ route('logout') }}" style="color: black;">TERMINAR SESSÃO</a></button></li>
             </ul>
         </nav>
         <div class="content-header-bottom">

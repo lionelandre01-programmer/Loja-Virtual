@@ -107,6 +107,22 @@
         <h3><a href="{{ route('loja') }}">Voltar</a></h3>
     </header>
 
+    @if (session('success'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgb(133, 249, 133), rgb(161, 247, 161), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%;">
+            <h3>{{ session('success') }}</h3>
+        </div>
+        
+    @elseif(session('error'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgba(239, 106, 106, 1), rgba(241, 145, 145, 1), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%;">
+            <h3>{{ session('error') }}</h3>
+        </div>
+
+    @endif
+
     <main>
 
         <div class="div-main">
@@ -120,8 +136,11 @@
                     <h3>Código: {{ $produto->id }}</h3>
                     <h3>Produto: {{ $produto->name }}</h3>
                     <h3>Preço: {{ number_format($produto->price, 2, ',','.') }}kz</h3>
-                    <h3>Categoria: {{ $produto->category }}</h3>
+                    <h3>Categoria: {{ $produto->categoria->name }}</h3>
                     <h3>Gênero: {{ $produto->genero }}</h3>
+                    @if (Auth::user()->role != 'cliente')
+                        <h3>Quantidade: {{ $produto->quantity }}</h3>
+                    @endif
                 </div>
             </div>
             
@@ -137,13 +156,13 @@
         
         @if (Auth::user()->role == 'cliente')
             
-            <form action="{{ route('adicionar', Auth::user()->id) }}" method="POST">
+            <form action="{{ route('adicionar') }}" method="POST">
                 @csrf
 
                 <input type="hidden" name="produto" value="{{ $produto->id }}" readonly>
 
                 <label for="quantidade">Quandidade a Comprar</label>
-                <input type="number" name="quantidade" id="quantidade" min="1" max="10" value="1" required>
+                <input type="number" name="quantidade" id="quantidade" min="1" max="{{ $produto->quantity }}" value="1" required>
 
                 <button type="submit">Comprar</button>
 

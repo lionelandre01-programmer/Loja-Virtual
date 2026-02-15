@@ -5,13 +5,13 @@ use App\Models\Encomenda;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\EncomendaController;
+use App\Http\Controllers\PDFController;
 
 Route::get('/', [ProdutoController::class, 'index'])->name('index');
 
-Route::get('/loja', [ProdutoController::class, 'loja'])->name('loja');
-
-
-Route::group(['prefix' => 'produto'], function(){
+Route::group(['prefix' => 'produto', 'middleware' => 'auth'], function(){
 
     Route::get('/create', [ProdutoController::class, 'create'])->name('create');
     Route::post('/store', [ProdutoController::class, 'store'])->name('store');
@@ -22,15 +22,16 @@ Route::group(['prefix' => 'produto'], function(){
     Route::delete('/destroy/{id}', [ProdutoController::class, 'destroy'])->name('destroy');
 });
 
-Route::group(['prefix' => 'loja'], function(){
+Route::group(['prefix' => 'loja', 'middleware' => 'auth'], function(){
 
+    Route::get('/', [ProdutoController::class, 'loja'])->name('loja');
     Route::get('/roupeiro-feminino', [ProdutoController::class, 'feminino'])->name('feminino');
     Route::get('/joias', [ProdutoController::class, 'joias'])->name('joias');
     Route::get('/joias/masculinas', [ProdutoController::class, 'joias_masc'])->name('joias_masc');
     Route::get('/joias/femininas', [ProdutoController::class, 'joias_femi'])->name('joias_femi');
 });
 
-Route::group(['prefix' => 'masculino'], function(){
+Route::group(['prefix' => 'masculino', 'middleware' => 'auth'], function(){
 
     Route::get('/joias', [ProdutoController::class, 'joias_masculinas'])->name('joias_masculinas');
     Route::get('/camisas', [ProdutoController::class, 'camisas'])->name('camisas');
@@ -44,7 +45,7 @@ Route::group(['prefix' => 'masculino'], function(){
     Route::get('/macacoes', [ProdutoController::class, 'macacoes_masculinas'])->name('macacoes_masculinas');
 });
 
-Route::group(['prefix' => 'feminino'], function(){
+Route::group(['prefix' => 'feminino', 'middleware' => 'auth'], function(){
 
     Route::get('/femininas/joias', [ProdutoController::class, 'joias_femininas'])->name('joias_femininas');
     Route::get('/femininas/blusas', [ProdutoController::class, 'blusas'])->name('blusas');
@@ -61,9 +62,10 @@ Route::group(['prefix' => 'feminino'], function(){
 Route::group(['prefix' => 'carrinho', 'middleware' => 'auth'], function(){
 
     Route::get('/', [CarrinhoController::class, 'index'])->name('carrinho');
-    Route::post('/adicionar/{id}', [CarrinhoController::class, 'adicionar'])->name('adicionar');
+    Route::post('/adicionar', [CarrinhoController::class, 'adicionar'])->name('adicionar');
     Route::get('/alterForm/{id}', [CarrinhoController::class, 'alterForm'])->name('alterForm');
-    Route::post('/alter/{id}', [CarrinhoController::class, 'alter'])->name('alter');
+    Route::post('/alter', [CarrinhoController::class, 'alter'])->name('alter');
+    Route::delete('/destroy/{id}', [CarrinhoController::class, 'destroy'])->name('deleteItem');
 });
 
 Route::group(['prefix' => 'user'], function(){
@@ -73,4 +75,20 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('/fazerLogin', [UserController::class, 'login'])->name('login');
     Route::post('/postLogin', [UserController::class, 'logar'])->name('login.post');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+});
+
+Route::group(['prefix' => 'categoria', 'middleware' => 'auth'], function(){
+
+    Route::get('/', [CategoriaController::class, 'create'])->name('createCategoria');
+    Route::post('/store', [CategoriaController::class, 'store'])->name('storeCategoria');
+    Route::get('/show', [CategoriaController::class, 'show'])->name('showCategoria');
+});
+
+Route::group(['prefix' => 'encomenda', 'middleware' => 'auth'], function(){
+
+    Route::get('/', [EncomendaController::class, 'index'])->name('encomendas');
+    Route::post('/store', [EncomendaController::class, 'create'])->name('encomendar');
+    Route::get('/show/{id}', [EncomendaController::class, 'show'])->name('showEncomenda');
+    Route::get('/pdf/{id}', [PDFController::class, 'create'])->name('pdf');
+
 });
