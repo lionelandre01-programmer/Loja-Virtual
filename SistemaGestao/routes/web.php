@@ -11,6 +11,8 @@ use App\Http\Controllers\PDFController;
 
 Route::get('/', [ProdutoController::class, 'index'])->name('index');
 
+Route::get('/dashboard', [ProdutoController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+
 Route::group(['prefix' => 'produto', 'middleware' => 'auth'], function(){
 
     Route::get('/create', [ProdutoController::class, 'create'])->name('create');
@@ -75,6 +77,8 @@ Route::group(['prefix' => 'user'], function(){
     Route::get('/fazerLogin', [UserController::class, 'login'])->name('login');
     Route::post('/postLogin', [UserController::class, 'logar'])->name('login.post');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/perfil', [UserController::class, 'showProfile'])->name('meuPerfil')->middleware('auth');
+    Route::post('/edit', [UserController::class, 'edit'])->name('editUser')->middleware('auth');
 });
 
 Route::group(['prefix' => 'categoria', 'middleware' => 'auth'], function(){

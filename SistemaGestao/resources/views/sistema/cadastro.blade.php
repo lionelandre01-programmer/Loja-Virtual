@@ -31,6 +31,7 @@
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -82,6 +83,7 @@
     </header>
 
     <main>
+        <h1 style="margin-bottom: 1rem;">CADASTRAR-SE</h1>
         <form action="{{ route('registrar.post') }}" method="POST">
             @csrf
             <label for="first_name">Primeiro Nome</label>

@@ -37,7 +37,7 @@
                 <li><button><a href="#" style="color: black;">HOME</a></button></li>
                 <li><button><a href="{{ route('loja') }}" style="color: black;">LOJA</a></button></li>
                 <li><button><a href="#support" style="color: black;">SUPPORT</a></button></li>
-                <li><button onclick="return alert('Deseja Sair?')"><a href="{{ route('logout') }}" style="color: black;">TERMINAR SESSÃO</a></button></li>
+                <li><button onclick="return confirm('Deseja Sair?')"><a href="{{ route('logout') }}" style="color: black;">TERMINAR SESSÃO</a></button></li>
             </ul>
         </nav>
         <div class="content-header-bottom">
@@ -103,7 +103,7 @@
                     <h3>Moda Urbana Elegante e Acessível</h3>
                 </div>
                 <div style=" width: 90%; height: 10%; display: flex; gap: 10%;">
-                    <button class="btn-article"><a href="#" style="color: black;">Comprar</a></button>
+                    <button class="btn-article"><a href="{{ route('loja') }}" style="color: black;">Comprar</a></button>
                     <button class="btn-article"><a href="{{ route('joias') }}" style="color: black;">Joalheria</a></button>
                 </div>
             </article>

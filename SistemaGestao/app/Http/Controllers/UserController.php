@@ -58,11 +58,25 @@ class UserController extends Controller
     }
 
     /**
+     * Display the user profile page.
+     */
+    public function showProfile()
+    {
+        $user = Auth::user();
+        
+        return view('sistema.meuperfil', compact('user'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Request $request, User $user)
     {
-        //
+        $user = auth()->user();
+        $user->update($request->all());
+
+        return redirect()->back()->with('success', 'Dados actualizados com sucesso!');
+
     }
 
     /**

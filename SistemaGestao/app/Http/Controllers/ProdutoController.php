@@ -4,10 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use App\Models\Categoria;
+use App\Models\Encomenda;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
+    /**
+     * Função que traz os dados para o dashboard
+     */
+    public function dashboard()
+    {
+        if (Auth()->user()->role != 'cliente'){
+
+            // Total de Produtos
+            $totalProdutos = Produto::count();
+
+            // Total de Encomendas
+            $totalEncomendas = Encomenda::count();
+
+            // Receita Total (soma de todos os totais das encomendas)
+            $receitaTotal = Encomenda::sum('total');
+
+            // Total de Clientes (usuários únicos com encomendas)
+            $totalClientes = User::count();
+
+            // Encomendas Recentes (últimas 5)
+            $encomendasRecentes = Encomenda::with('user')
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+
+            // Produtos Mais Vendidos (com count de vendas)
+            $produtosPopulares = Produto::with('categoria')
+                ->orderBy('quantity', 'desc')
+                ->limit(5)
+                ->get();
+
+            return view('sistema.dashboard', compact(
+                'totalProdutos',
+                'totalEncomendas',
+                'receitaTotal',
+                'totalClientes',
+                'encomendasRecentes',
+                'produtosPopulares'
+            ));
+
+        }else{
+
+            abort(403, 'Acesso Negado!');
+        }
+    }
+
     /**
      * Função que leva para a home
      */

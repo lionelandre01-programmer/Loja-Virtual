@@ -11,7 +11,7 @@
         <div>
             <span>👨‍💼</span>
             <p>
-                <a href="#">MEU PERFIL</a>
+                <a href="{{ route('meuPerfil') }}">MEU PERFIL</a>
             </p>
         </div>
 

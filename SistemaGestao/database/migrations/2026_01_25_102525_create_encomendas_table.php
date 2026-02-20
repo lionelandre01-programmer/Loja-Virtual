@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->enum('estado',['pendente','entregue','reembolso','reembolsado','enviado'])->default('pendente');
             $table->decimal('total', 10, 2)->nullable();
-            $table->text('endereco')->default('Levantamento');
+            $table->string('endereco')->default('Levantamento');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
