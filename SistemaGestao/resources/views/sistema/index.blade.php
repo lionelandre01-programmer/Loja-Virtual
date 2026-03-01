@@ -36,7 +36,15 @@
             <ul>
                 <li><button><a href="#" style="color: black;">HOME</a></button></li>
                 <li><button><a href="{{ route('loja') }}" style="color: black;">LOJA</a></button></li>
-                <li><button><a href="#support" style="color: black;">SUPPORT</a></button></li>
+
+                @if ( Auth::check() && Auth::user()->role != 'cliente' && Auth::user()->role != 'funcionario' )
+
+                    <li><button><a href="{{ route('registrar') }}" style="color: black;">CADASTRAR</a></button></li>
+                @else
+
+                    <li><button><a href="#support" style="color: black;">SUPPORT</a></button></li>
+                @endif
+                
                 <li><button onclick="return confirm('Deseja Sair?')"><a href="{{ route('logout') }}" style="color: black;">TERMINAR SESSÃO</a></button></li>
             </ul>
         </nav>

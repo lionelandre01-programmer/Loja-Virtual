@@ -12,54 +12,13 @@ class MovimentoController extends Controller
      */
     public function index()
     {
-        //
+        $movimentos = Movimento::all();
+        return view('sistema.movimento', ['movimentos' => $movimentos]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Movimento $movimento)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Movimento $movimento)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Movimento $movimento)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Movimento $movimento)
-    {
-        //
+        $movimento = Movimento::find($id);
+        return view('sistema.movimentodetalhes',['movimento' => $movimento]);
     }
 }

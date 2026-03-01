@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Movimento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('sistema/cadastro');
+        $user = User::where('role', 'administrador')->exists();
+        return view('sistema/cadastro', ['user' => $user]);
     }
 
     /**
@@ -21,8 +23,77 @@ class UserController extends Controller
      */
     public function store_user(Request $request)
     {
-        $user = User::create($request->all());
-        return redirect()->route('login');
+        if ($request->password == $request->password_confirm){
+
+            if ( !$request->filled('role') ){
+
+                $user = User::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'role' => 'cliente',
+                    'password' => $request->password
+                ]);
+
+                Auth::login($user);
+                return redirect()->route('index');
+
+            }else{
+
+                if (User::count() != 0 && (Auth::user()->role != 'administrador' && Auth::user()->role != 'gestor')){
+
+                    $user = User::create([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'phone' => $request->phone,
+                        'email' => $request->email,
+                        'role' => 'cliente',
+                        'password' => $request->password
+                    ]);
+
+                    Auth::login($user);
+                    return redirect()->route('index');
+
+                }else{
+
+                    if (User::count() != 0 && Auth::user()->role == 'gestor' && ($request->role == 'gestor' or $request->role == 'administrador')){
+
+                        return redirect()->back()->with('error', 'Não está autorizado a delegar tal função!');
+
+                    }else{
+
+                        $user = User::create([
+                            'first_name' => $request->first_name,
+                            'last_name' => $request->last_name,
+                            'phone' => $request->phone,
+                            'email' => $request->email,
+                            'role' => $request->role,
+                            'password' => $request->password
+                        ]);
+
+                        $movimentos = new Movimento;
+                        $movimentos->movimento = "Novo Usuário";
+                        $movimentos->codigo = $user->id;
+                        $movimentos->user_id = Auth()->id();
+                        $movimentos->objecto = $user->first_name . "" . $user->last_name;
+                        $movimentos->category = "Usuário";
+                        $movimentos->save();
+
+                        return redirect()->back()->with('success', 'Novo Usuário Cadastrado!');
+                    }
+
+                }
+
+            }
+            
+
+        }else{
+
+            return redirect()->back()->with('error', 'A palavra-passe e a confirmação da palavra-passe devem ser idênticas!');
+        }
+
+        
     }
 
     public function login()

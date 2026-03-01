@@ -320,6 +320,10 @@
                 z-index: 1000;
             }
 
+            .some{
+                display: none;
+            }
+
             .main-content {
                 margin-left: 0;
             }
@@ -404,10 +408,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID Encomenda</th>
+                                <th class="some">ID Encomenda</th>
                                 <th>Cliente</th>
-                                <th>Data</th>
-                                <th>Total</th>
+                                <th class="some">Data</th>
+                                <th class="some">Total</th>
                                 <th>Estado</th>
                                 <th>Ações</th>
                             </tr>
@@ -415,10 +419,10 @@
                         <tbody>
                             @forelse($encomendasRecentes ?? [] as $encomenda)
                             <tr>
-                                <td>#{{ $encomenda->id }}</td>
+                                <td class="some">#{{ $encomenda->id }}</td>
                                 <td>{{ $encomenda->user->first_name ?? 'N/A' }}</td>
-                                <td>{{ $encomenda->created_at->format('d/m/Y H:i') }}</td>
-                                <td>{{ number_format($encomenda->total, 2, ',', '.') }}kz</td>
+                                <td class="some">{{ $encomenda->created_at->format('d/m/Y H:i') }}</td>
+                                <td class="some">{{ number_format($encomenda->total, 2, ',', '.') }}kz</td>
                                 <td>
                                     @php
                                         $estadoBadge = match($encomenda->estado) {
@@ -460,31 +464,28 @@
                             <tr>
                                 <th>Produto</th>
                                 <th>Categoria</th>
-                                <th>Preço</th>
-                                <th>Stock</th>
+                                <th class="some">Preço</th>
+                                <th class="some">Stock</th>
                                 <th>Vendas</th>
-                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($produtosPopulares ?? [] as $produto)
                             <tr>
-                                <td>{{ $produto->name ?? 'N/A' }}</td>
-                                <td>{{ ucfirst($produto->Categoria->name) ?? 'N/A' }}</td>
-                                <td>{{ number_format($produto->price, 2, ',', '.') }}kz</td>
+                                <td>{{ $produto->Produto->name ?? 'N/A' }}</td>
+                                <td>{{ ucfirst($produto->Produto->Categoria->name) ?? 'N/A' }}</td>
+                                <td class="some">{{ number_format($produto->Produto->price, 2, ',', '.') }}kz</td>
+                                <td class="some">{{ $produto->Produto->quantity ?? 0 }} un</td>
                                 <td>
-                                    @if(($produto->quantity ?? 0) > 10)
-                                        <span class="badge badge-success">{{ $produto->quantity ?? 0 }} un</span>
-                                    @elseif(($produto->quantity ?? 0) > 0)
-                                        <span class="badge badge-warning">{{ $produto->quantity ?? 0 }} un</span>
+                                    @if(($produto->quantidade ?? 0) > 10)
+                                        <span class="badge badge-success">{{ $produto->quantidade ?? 0 }} un</span>
+                                    @elseif(($produto->quantidade ?? 0) > 0)
+                                        <span class="badge badge-warning">{{ $produto->quantidade ?? 0 }} un</span>
                                     @else
                                         <span class="badge badge-danger">Sem stock</span>
                                     @endif
                                 </td>
-                                <td>{{ $produto->vendas ?? 0 }} un</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">Editar</a>
-                                </td>
+                                
                             </tr>
                             @empty
                             <tr>

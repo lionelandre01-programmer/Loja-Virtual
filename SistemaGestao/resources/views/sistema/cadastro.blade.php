@@ -38,7 +38,7 @@
 
         form{
             width: 50%;
-            height: 80%;
+            height: 85%;
             display: flex;
             flex-direction: column;
             border: 1px solid black;
@@ -48,7 +48,7 @@
         }
 
         form input, form select{
-            height: 10%;
+            height: 9%;
         }
 
         div{
@@ -82,6 +82,22 @@
         <h3><a href="{{ route('index') }}">Voltar</a></h3>
     </header>
 
+    @if (session('success'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgb(133, 249, 133), rgb(161, 247, 161), transparent);
+        border-radius: 5px; margin: 2%; padding: 2% 1%; justify-content: start;">
+            <h3>{{ session('success') }}</h3>
+        </div>
+
+    @elseif (session('error'))
+
+        <div style="width: 80%; height: 10vh; background: linear-gradient(97deg, rgba(239, 106, 106, 1), rgba(241, 145, 145, 1), transparent);
+            border-radius: 5px; margin: 2%; padding: 2% 1%; justify-content: start;">
+                <h3>{{ session('error') }}</h3>
+        </div>
+
+    @endif
+
     <main>
         <h1 style="margin-bottom: 1rem;">CADASTRAR-SE</h1>
         <form action="{{ route('registrar.post') }}" method="POST">
@@ -92,22 +108,32 @@
             <label for="last_name">Último Nome</label>
             <input type="text" name="last_name" id="last_name" required>
 
+            <label for="phone">Telefone</label>
+            <input type="number" name="phone" id="phone" max="999999999" required>
+
             <label for="email">E-Mail</label>
             <input type="email" name="email" id="email" required>
 
-            <label for="role">Função</label>
-            <select name="role" id="role">
-                <option value="cliente">Cliente</option>
-                <option value="funcionario">Simples Funcionário</option>
-                <option value="gestor">Gestor</option>
-                <option value="administrador">Administrador</option>
-            </select>
+            @if (Auth::check() or !$user)
+                <label for="role">Função</label>
+                <select name="role" id="role">
+                    <option value="cliente">Cliente</option>
+                    <option value="funcionario">Simples Funcionário</option>
+                    <option value="gestor">Gestor</option>
+                    @if (!$user)
+                        <option value="administrador">Administrador</option>
+                    @endif
+                </select>
+            @endif
 
             <label for="password">Palavra-Passe</label>
             <input type="password" name="password" id="password" required>
 
-            <div>
-                 <input type="submit" value="Cadastrar" style="background-color: aliceblue; border: 1px solid black;">
+            <label for="password_confirm">Confirmar Palavra-Passe</label>
+            <input type="password" name="password_confirm" id="password_confirm" required>
+
+            <div style="margin-top: 1%;">
+                 <input type="submit" value="Cadastrar-se" style="background-color: aliceblue; border: 1px solid black;">
                 <input type="reset" value="Cancelar" style="background-color: whitesmoke; border: 1px solid black;">
             </div>
         </form>

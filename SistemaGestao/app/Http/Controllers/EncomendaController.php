@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Encomenda;
 use App\Models\EncomendaItem;
 use App\Models\Carrinho;
+use App\Models\Produto;
 use App\Models\CarrinhoItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,13 @@ class EncomendaController extends Controller
 
             }
             
+            $movimentos = new Movimento;
+            $movimentos->user_id = Auth()->id();
+            $movimentos->movimento = "Encomenda Feita";
+            $movimentos->objecto = "Encomenda";
+            $movimentos->codigo = $encomenda->id;
+            $movimentos->category = "Encomenda";
+            $movimentos->save();
 
             
             $items = CarrinhoItem::where('carrinho_id', $carrinho->id)->where('status','activo')->get();
@@ -65,6 +73,10 @@ class EncomendaController extends Controller
                 $encomendaItems->quantidade = $item->quantidade;
                 $encomendaItems->preco = $item->produto->price;
                 $encomendaItems->save();
+
+                $produto = Produto::find($item->produto_id);
+                $produto->quantity = $produto->quantity - $item->quantidade;
+                $produto->save();
 
             }
 

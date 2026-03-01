@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('movimentos', function (Blueprint $table) {
             $table->id();
-            $table->string('encomenda_id')->nullable();
-            $table->string('produto_id')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->string('objecto');
-            $table->integer('codigo')->nullable();
+            $table->string('category')->nullable(); //Vai dizer se é produto, usuário, encomendas...
+            $table->unsignedBigInteger('user_id'); //O responsável pelo movimento
+            $table->string('objecto'); //O objecto do movimento.
+            $table->integer('codigo'); //Id do objecto.
             $table->integer('quantidade')->default(1);
             $table->string('movimento');
-            $table->text('descricao')->nullable();
+            $table->text('nota')->nullable();//O motivo do movimento
+            $table->string('update')->nullable();//O que foi alterado
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Movimento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {
@@ -24,6 +26,15 @@ class CategoriaController extends Controller
 
         $categoria->name = $request->name;
         $categoria->save();
+
+        $movimentos = new Movimento;
+        $movimentos->objecto = $categoria->name;
+        $movimentos->category = "Categoria";
+        $movimentos->codigo = $categoria->id;
+        $movimentos->movimento = "Cadastrar Categoria";
+        $movimentos->user_id = Auth()->id();
+        $movimentos->save();
+
         return redirect()->back()->with('success' ,'Categoria Criada com sucesso!');
     }
 
@@ -39,7 +50,7 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Encomenda $encomenda)
+    public function edit()
     {
         //
     }
@@ -47,7 +58,7 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Encomenda $encomenda)
+    public function update(Request $request)
     {
         //
     }
@@ -55,7 +66,7 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Encomenda $encomenda)
+    public function destroy()
     {
         //
     }

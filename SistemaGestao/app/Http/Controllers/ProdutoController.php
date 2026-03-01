@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\Encomenda;
+use App\Models\Movimento;
+use App\Models\EncomendaItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProdutoController extends Controller
 {
@@ -27,7 +30,7 @@ class ProdutoController extends Controller
             $receitaTotal = Encomenda::sum('total');
 
             // Total de Clientes (usuários únicos com encomendas)
-            $totalClientes = User::count();
+            $totalClientes = User::where('role', 'cliente')->count();
 
             // Encomendas Recentes (últimas 5)
             $encomendasRecentes = Encomenda::with('user')
@@ -36,8 +39,7 @@ class ProdutoController extends Controller
                 ->get();
 
             // Produtos Mais Vendidos (com count de vendas)
-            $produtosPopulares = Produto::with('categoria')
-                ->orderBy('quantity', 'desc')
+            $produtosPopulares = EncomendaItem::orderBy('quantidade', 'desc')
                 ->limit(5)
                 ->get();
 
@@ -113,6 +115,14 @@ class ProdutoController extends Controller
 
         $produto->save();
 
+        $movimentos = new Movimento;
+        $movimentos->objecto = $produto->name;
+        $movimentos->user_id = Auth()->id();
+        $movimentos->codigo = $produto->id;
+        $movimentos->category = "Produto";
+        $movimentos->movimento = "Novo Produto";
+        $movimentos->save();
+
         return redirect()->route('loja');
     }
 
@@ -131,7 +141,8 @@ class ProdutoController extends Controller
     public function edit($id)
     {
         $produto = Produto::find($id);
-        return view('produto/edit', ['produto' => $produto]);
+        $categorias = Categoria::all();
+        return view('produto/edit', ['produto' => $produto, 'categorias' => $categorias]);
     }
 
     /**
@@ -140,6 +151,7 @@ class ProdutoController extends Controller
     public function update(Request $request, $id)
     {
         $produto = Produto::find($id);
+        $original = $produto->getOriginal();
 
         $produto->name = $request->name;
         $produto->price = $request->price;
@@ -163,6 +175,25 @@ class ProdutoController extends Controller
 
         $produto->save();
 
+        
+        $movimentos = new Movimento;
+        $movimentos->user_id = Auth()->id();
+        $movimentos->codigo = $produto->id;
+        $movimentos->category = "Produto";
+        $movimentos->movimento = "Produto Actualizado";
+        $movimentos->objecto = $produto->name;
+
+        foreach ($request->except('_token') as $key => $value){
+
+            if ($original[$key] != $value){
+                
+                $movimentos->update = ($movimento->update ?? "") . " : De {$original[$key]} para $value "; 
+            }
+
+        }
+
+        $movimentos->save();
+
         return redirect()->route('loja');
     }
     /**
@@ -171,6 +202,15 @@ class ProdutoController extends Controller
     public function destroy($id)
     {
         $produto = Produto::find($id);
+
+        $movimentos = new Movimento;
+        $movimentos->codigo = $produto->id;
+        $movimentos->category = "Produto";
+        $movimentos->user_id = Auth()->id();
+        $movimentos->movimento = "Produto Deletado";
+        $movimentos->objecto = $produto->name;
+        $movimentos-save();
+
         $produto->delete();
         return redirect()->route('loja');
     }

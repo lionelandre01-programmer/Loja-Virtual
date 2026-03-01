@@ -118,19 +118,9 @@
 
             <label for="category">Categoria</label>
             <select name="category" id="category">
-                <option value="acessório" @if($produto->category == 'acessório') selected @endif>Acessório</option>
-                <option value="calça" @if($produto->category == 'calça') selected @endif>Calça</option>
-                <option value="camisa" @if($produto->category == 'camisa') selected @endif>Camisa</option>
-                <option value="carteira" @if($produto->category == 'carteira') selected @endif>Carteira</option>
-                <option value="chinelo" @if($produto->category == 'chinelo') selected @endif>Chinelo</option>
-                <option value="joia" @if($produto->category == 'joia') selected @endif>Joía</option>
-                <option value="chapeu" @if($produto->category == 'chapeu') selected @endif>Chapéu</option>
-                <option value="calçado" @if($produto->category == 'calçado') selected @endif>Calçado</option>
-                <option value="mochila" @if($produto->category == 'mochila') selected @endif>Mochila</option>
-                <option value="blusa" @if($produto->category == 'blusa') selected @endif>Blusa</option>
-                <option value="casaco" @if($produto->category == 'casaco') selected @endif>Casaco</option>
-                <option value="vestido" @if($produto->category == 'vestido') selected @endif>Vestido</option>
-                <option value="macacao" @if($produto->category == 'macacao') selected @endif>Macacão</option>
+                @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id }}">{{ $categoria->name }}</option>
+                @endforeach
             </select>
 
             <label for="description">Descrição</label>

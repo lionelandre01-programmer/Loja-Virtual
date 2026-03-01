@@ -7,6 +7,7 @@ use App\Http\Controllers\CarrinhoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EncomendaController;
+use App\Http\Controllers\MovimentoController;
 use App\Http\Controllers\PDFController;
 
 Route::get('/', [ProdutoController::class, 'index'])->name('index');
@@ -95,4 +96,10 @@ Route::group(['prefix' => 'encomenda', 'middleware' => 'auth'], function(){
     Route::get('/show/{id}', [EncomendaController::class, 'show'])->name('showEncomenda');
     Route::get('/pdf/{id}', [PDFController::class, 'create'])->name('pdf');
 
+});
+
+Route::group(['prefix' => 'movimento', 'middleware' => 'auth'], function(){
+
+    Route::get('/', [MovimentoController::class, 'index'])->name('movimento');
+    Route::get('/detalhes/{id}', [MovimentoController::class, 'show'])->name('movimentoDetalhes');
 });

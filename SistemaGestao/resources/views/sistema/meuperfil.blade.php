@@ -385,6 +385,7 @@
 
                     @if (Auth()->user()->role != 'cliente')
                         <a href="{{ route('dashboard') }}" class="btn btn-danger" style="background-color: goldenrod;">📊 DashBoard</a>
+                        <a href="{{ route('movimento') }}" class="btn btn-danger" style="background-color: goldenrod;">🧾 Movimentos</a>
                     @endif
                 </div>
             </div>
