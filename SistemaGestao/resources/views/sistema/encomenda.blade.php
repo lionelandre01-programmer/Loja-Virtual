@@ -97,15 +97,13 @@
                         <td>{{ $encomenda->User->first_name }} {{ $encomenda->User->last_name }}</td>
                         <td class="category">{{ $encomenda->estado }}</td>
                         <td>
-                            <button style="padding: 1% 2%; border: 1px solid black; background-color: gold; border-radius: 5px;" class="alter">
+                            <button style="padding: 1% 2%; border: 1px solid black; background-color: gold; border-radius: 3px;" class="alter">
                                 <a href="{{ route('showEncomenda', $encomenda->id) }}">Visualizar</a>
                             </button>
 
-                            <form action="#" method="POST" style="width: 45%; display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <input type="submit" value="Cancelar" style="padding: 1% 2%; border: 1px solid black; background-color: red; border-radius: 5px;">
-                            </form>
+                            <button style="padding: 1% 2%; border: 1px solid black; background-color: red; border-radius: 3px;" class="alter">
+                                <a href="{{ route('showEncomenda', $encomenda->id) }}">Cancelar</a>
+                            </button>
                         </td>
                     </tr>
 

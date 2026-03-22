@@ -76,7 +76,7 @@
 </head>
 <body>
     <header>
-        <h3><a href="{{ route('loja') }}">Voltar</a></h3>
+        <h3><a href="{{ route('create') }}">Voltar</a></h3>
     </header>
 
     @if (session('success'))

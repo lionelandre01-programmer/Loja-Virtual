@@ -78,6 +78,12 @@
                 padding: 10%;
             }
 
+            button{
+                padding: 3% 1%;
+                margin-top: 2%;
+                margin-bottom: 0;
+            }
+
         }
         
     </style>
@@ -129,7 +135,7 @@
             <label for="image">Imagem</label>
             <input type="file" id="image" name="image">
 
-            <input type="submit" style="background-color: aliceblue; border: 1px solid black;">
+            <input type="submit" value="Cadastrar" style="background-color: aliceblue; border: 1px solid black;">
         </form>
     </main>
 </body>

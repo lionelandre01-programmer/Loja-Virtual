@@ -10,6 +10,10 @@ use App\Http\Controllers\EncomendaController;
 use App\Http\Controllers\MovimentoController;
 use App\Http\Controllers\PDFController;
 
+Route::get('/teste', function() {
+    return view('teste');
+});
+
 Route::get('/', [ProdutoController::class, 'index'])->name('index');
 
 Route::get('/dashboard', [ProdutoController::class, 'dashboard'])->name('dashboard')->middleware('auth');
@@ -22,7 +26,9 @@ Route::group(['prefix' => 'produto', 'middleware' => 'auth'], function(){
     Route::get('/show/{id}', [ProdutoController::class, 'show'])->name('show');
     Route::get('/edit/{id}', [ProdutoController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [ProdutoController::class, 'update'])->name('update');
+    Route::get('/delete/{id}', [ProdutoController::class, 'delete'])->name('delete');
     Route::delete('/destroy/{id}', [ProdutoController::class, 'destroy'])->name('destroy');
+    Route::get('/maioresPrecos', [ProdutoController::class, 'maioresPrecos'])->name('maiorPreco');
 });
 
 Route::group(['prefix' => 'loja', 'middleware' => 'auth'], function(){
@@ -94,6 +100,10 @@ Route::group(['prefix' => 'encomenda', 'middleware' => 'auth'], function(){
     Route::get('/', [EncomendaController::class, 'index'])->name('encomendas');
     Route::post('/store', [EncomendaController::class, 'create'])->name('encomendar');
     Route::get('/show/{id}', [EncomendaController::class, 'show'])->name('showEncomenda');
+    Route::get('/cancelar/{id}', [EncomendaController::class, 'cancelar'])->name('cancelarEncomenda');
+    Route::get('/enviar/{id}', [EncomendaController::class, 'enviado'])->name('encomendaEnviada');
+    Route::get('/entregar/{id}', [EncomendaController::class, 'entregue'])->name('encomendaEntregue');
+    Route::get('/reembolso/{id}', [EncomendaController::class, 'reembolso'])->name('reembolso');
     Route::get('/pdf/{id}', [PDFController::class, 'create'])->name('pdf');
 
 });

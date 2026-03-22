@@ -159,21 +159,24 @@
 
             @endif
 
-            <form action="{{ route('encomendar') }}" method="POST">
-                @csrf
+            @if ($items)
+                <form action="{{ route('encomendar') }}" method="POST">
+                    @csrf
 
-                <span style="color: red;">
-                    Atenção: Caso queira uma entrega ao domicílio, informe o seu endereço a baixo. <br>
-                    Caso deseje levantar o(s) produto(s) em uma das nossas lojas, deixe o campo a 
-                    baixo em branco!
-                </span>
+                    <span style="color: red;">
+                        Atenção: Caso queira uma entrega ao domicílio, informe o seu endereço a baixo. <br>
+                        Caso deseje levantar o(s) produto(s) em uma das nossas lojas, deixe o campo a 
+                        baixo em branco!
+                    </span>
 
-                <label for="adress">Endreço De Entrega</label>
-                <textarea name="endereco" id="adress" placeholder="Informe aqui seu endereço" rows="5"></textarea>
+                    <label for="adress">Endreço De Entrega</label>
+                    <textarea name="endereco" id="adress" placeholder="Informe aqui seu endereço" rows="5"></textarea>
 
-                <button type="submit" style="height: 20%; width: 25%; border: 1px solid black; background-color: goldenrod; border-radius: 5px;">Finalizar Compra</button>
+                    <button type="submit" style="height: 20%; width: 25%; border: 1px solid black; background-color: goldenrod; border-radius: 5px;">Finalizar Compra</button>
 
-            </form>
+                </form>
+            @endif
+            
             
         </div>
     </main>

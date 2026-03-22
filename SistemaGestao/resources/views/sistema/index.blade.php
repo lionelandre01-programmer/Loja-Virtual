@@ -34,7 +34,7 @@
         </div>
         <nav id="menu">
             <ul>
-                <li><button><a href="#" style="color: black;">HOME</a></button></li>
+                <li><button><a href="{{ route('index') }}" style="color: black;">HOME</a></button></li>
                 <li><button><a href="{{ route('loja') }}" style="color: black;">LOJA</a></button></li>
 
                 @if ( Auth::check() && Auth::user()->role != 'cliente' && Auth::user()->role != 'funcionario' )

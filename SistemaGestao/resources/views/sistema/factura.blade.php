@@ -172,8 +172,12 @@
             background-color: #f39c12;
         }
 
-        .status-badge.processando{
+        .status-badge.reembolso{
             background-color: #3498db;
+        }
+
+        .status-badge.reembolsado{
+            background-color: #0064a7;
         }
 
         .status-badge.enviado{
@@ -213,6 +217,59 @@
 
         .print-button:hover{
             background-color: #555;
+        }
+
+        .alert-container {
+            width: 100%;
+            padding: 0 25px;
+            margin-bottom: 30px;
+            margin-top: 13vh;
+            position: absolute;
+        }
+
+        .alert {
+            padding: 18px 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+        }
+
+        .alert-success .alert-icon::before {
+            content: "✓";
+        }
+
+        .alert-error .alert-icon::before {
+            content: "✕";
         }
 
         @media print{
@@ -255,6 +312,22 @@
     <header>
         <h3><a href="{{ route('encomendas') }}">Voltar</a></h3>
     </header>
+
+    @if (session('success'))
+    <div class="alert-container">
+        <div class="alert alert-success">
+            <div class="alert-icon"></div>
+            <span>{{ session('success') }}</span>
+        </div>
+    </div>
+@elseif(session('error'))
+    <div class="alert-container">
+        <div class="alert alert-error">
+            <div class="alert-icon"></div>
+            <span>{{ session('error') }}</span>
+        </div>
+    </div>
+@endif
 
     <main>
         <div class="factura-container">
@@ -353,6 +426,25 @@
             <!-- Botão de Impressão -->
             <button class="print-button" onclick="window.print()">🖨️ Imprimir Factura</button>
             <button class="print-button"><a href="{{ route('pdf', $encomenda->id ) }}" style="color: white;">Gerar PDF</a></button>
+            @if (Auth::user()->role == 'cliente')
+
+                @if ($encomenda->estado == 'pendente')
+                    <button class="print-button"><a href="{{ route('cancelarEncomenda', $encomenda->id ) }}" style="color: white;">Cancelar Encomenda</a></button>
+                @endif
+                
+            @else
+
+                @if ($encomenda->estado == 'pendente' && (Auth::user()->role == 'administrador' or Auth::user()->role == 'gestor'))
+                    <button class="print-button"><a href="{{ route('encomendaEnviada', $encomenda->id ) }}" style="color: white;">Enviar Encomenda</a></button>                    
+                @elseif($encomenda->estado == 'enviado' && (Auth::user()->role == 'administrador' or Auth::user()->role == 'gestor'))
+                    <button class="print-button"><a href="{{ route('encomendaEntregue', $encomenda->id ) }}" style="color: white;">Confirmar Entrega</a></button>
+                @elseif ($encomenda->estado == 'reembolso' && (Auth::user()->role == 'administrador' or Auth::user()->role == 'gestor'))
+                    <button class="print-button"><a href="{{ route('reembolso', $encomenda->id ) }}" style="color: white;">Confirmar Reembolso</a></button>
+                @else
+                    <button style="display: none;"></button>
+                @endif
+                
+            @endif
         </div>
     </main>
 </body>

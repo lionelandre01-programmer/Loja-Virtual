@@ -25,8 +25,8 @@
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: linear-gradient(135deg, goldenrod 0%, #c3a70aff 100%);
-            color: white;
+            background-color: #d4d6e2;
+            color: #0e1b2b;
             padding: 30px 0;
             position: fixed;
             height: 100vh;
@@ -58,7 +58,7 @@
             display: flex;
             align-items: center;
             padding: 15px 20px;
-            color: rgba(255,255,255,0.8);
+            color: #0e1b2b;
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 4px solid transparent;
@@ -66,13 +66,13 @@
 
         .sidebar-menu a:hover {
             background-color: rgba(255,255,255,0.1);
-            color: white;
+            color: #3f7dbc;
             border-left-color: #fff;
         }
 
         .sidebar-menu a.active {
             background-color: rgba(255,255,255,0.2);
-            color: white;
+            color: #3f7dbc;
             border-left-color: #fff;
         }
 
@@ -373,7 +373,7 @@
                 <div class="user-section">
                     <div class="user-avatar">{{ strtoupper(substr(auth()->user()->first_name ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->last_name ?? '', 0, 1)) }}</div>
                     <span>{{ auth()->user()->first_name ?? 'Utilizador' }} {{ auth()->user()->last_name ?? '' }}</span>
-                    <a href="{{ route('logout') }}" class="logout-btn">Sair</a>
+                    <a href="{{ route('meuPerfil') }}" class="logout-btn">Voltar</a>
                 </div>
             </header>
 

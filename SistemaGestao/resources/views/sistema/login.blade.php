@@ -25,6 +25,7 @@
         body{
             height: 85vh;
             width: 100dvw;
+            background-color: #e5e2dd;
         }
 
         main{
@@ -45,10 +46,26 @@
             justify-content: space-evenly;
             padding: 2%;
             border-radius: 8px;
+            transition: all 0.9s ease-in-out;
+        }
+
+        form:hover{
+            cursor: pointer;
+            background-color: aliceblue;
+            box-shadow: 0 0 15px 20px #e6eaed;
+            width: 55%;
+            height: 45%;
+            border-color: skyblue;
         }
 
         form input{
             height: 20%;
+            transition: all 0.9s ease-in-out;
+        }
+
+        form input:hover{
+            color: #1c2a33;
+            border-radius: 10px;
         }
 
         div{
@@ -83,7 +100,7 @@
     </header>
 
     <main>
-        <h1 style="margin-bottom: 1rem;">FAZER LOGIN</h1>
+        <h1 style="margin-bottom: 1rem; color: #1c2a33;">FAZER LOGIN</h1>
         <form action="{{ route('login.post') }}" method="POST">
             @csrf
             <label for="email">E-Mail</label>

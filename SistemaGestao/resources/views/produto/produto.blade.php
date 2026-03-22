@@ -17,7 +17,12 @@
         @endif
         <a href="{{ route('encomendas') }}" class="btn-action secondary">
             <span>📦</span>
-            <span>Minhas Encomendas</span>
+            @if (Auth::user()->role == 'cliente')
+                <span>Minhas Encomendas</span>
+            @else
+                <span>Todas Encomendas</span>
+            @endif
+            
         </a>
     </div>
 </div>
@@ -46,10 +51,10 @@
             📋 Produtos Disponíveis
         </div>
         <div class="filter-sort">
-            <select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+            <select>
                 <option value="">🔀 Ordenar</option>
-                <option value="">Mais Recentes</option>
-                <option value="">Preço: Menor para Maior</option>
+                <option> Mais Recentes</option>
+                <option><a href="{{ route('maiorPreco') }}">Preço: Menor para Maior</a></option>
                 <option value="">Preço: Maior para Menor</option>
                 <option value="">Mais Populares</option>
             </select>
@@ -83,11 +88,7 @@
                     <div class="btn-produto">
                         <a href="{{ route('show', $produto->id) }}">👁️ Ver</a>
                         <a href="{{ route('edit', $produto->id) }}">✏️ Editar</a>
-                        <form action="{{ route('destroy', $produto->id) }}" method="POST" style="width: 100%; display: block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja eliminar este produto?')" style="background-color: red;">🗑️ Eliminar</button>
-                        </form>
+                        <a href="{{ route('delete', $produto->id) }}"  style="background-color: red; color: aliceblue; width: 100%; display: block;">🗑️ Eliminar</a>
                     </div>
                 @endif
             </div>

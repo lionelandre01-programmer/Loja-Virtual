@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Encomenda;
 use App\Models\EncomendaItem;
 use App\Models\Carrinho;
+use App\Models\Movimento;
 use App\Models\Produto;
 use App\Models\CarrinhoItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class EncomendaController extends Controller
 {
@@ -108,27 +110,107 @@ class EncomendaController extends Controller
         return view('sistema.factura', ['encomendas' => $encomendas, 'encomenda' => $encomenda]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Encomenda $encomenda)
+    public function cancelar($id)
     {
-        //
+        $encomenda = Encomenda::find($id);
+
+        if ($encomenda->created_at->diffInMinutes(Carbon::now()) > 5){
+
+            return redirect()->back()->with('error', 'Já não pode cancelar a encomenda!');
+
+        }else {
+
+            $encomenda->estado = 'reembolso';
+            $encomenda->save();
+
+            $movimentos = new Movimento;
+            $movimentos->user_id = Auth()->id();
+            $movimentos->movimento = "Encomenda Cancelada";
+            $movimentos->objecto = "Encomenda";
+            $movimentos->codigo = $encomenda->id;
+            $movimentos->category = "Encomenda";
+            $movimentos->save();
+
+            return redirect()->back()->with('success', 'Encomenda Cancelada');
+            
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Encomenda $encomenda)
+    public function enviado($id)
     {
-        //
+        $encomenda = Encomenda::find($id);
+
+        if (Auth::user()->role != 'administrador' && Auth::user()->role != 'gestor'){
+
+            return redirect()->back()->with('error', 'Não tem autorização para realizar tal acção!');
+
+        }else {
+
+            $encomenda->estado = 'enviado';
+            $encomenda->save();
+
+            $movimentos = new Movimento;
+            $movimentos->user_id = Auth()->id();
+            $movimentos->movimento = "Encomenda Enviada";
+            $movimentos->objecto = "Encomenda";
+            $movimentos->codigo = $encomenda->id;
+            $movimentos->category = "Encomenda";
+            $movimentos->save();
+
+            return redirect()->back()->with('success', 'Encomenda Enviada');
+            
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Encomenda $encomenda)
+    public function entregue($id)
     {
-        //
+        $encomenda = Encomenda::find($id);
+
+        if (Auth::user()->role != 'administrador' && Auth::user()->role != 'gestor'){
+
+            return redirect()->back()->with('error', 'Não tem autorização para realizar tal acção!');
+
+        }else {
+
+            $encomenda->estado = 'entregue';
+            $encomenda->save();
+
+            $movimentos = new Movimento;
+            $movimentos->user_id = Auth()->id();
+            $movimentos->movimento = "Encomenda Entregue";
+            $movimentos->objecto = "Encomenda";
+            $movimentos->codigo = $encomenda->id;
+            $movimentos->category = "Encomenda";
+            $movimentos->save();
+
+            return redirect()->back()->with('success', 'Entrega Confirmado');
+            
+        }
+    }
+
+    public function reembolso($id)
+    {
+        $encomenda = Encomenda::find($id);
+
+        if (Auth::user()->role != 'administrador' && Auth::user()->role != 'gestor'){
+
+            return redirect()->back()->with('error', 'Não tem autorização para realizar tal acção!');
+
+        }else {
+
+            $encomenda->estado = 'reembolsado';
+            $encomenda->save();
+
+            $movimentos = new Movimento;
+            $movimentos->user_id = Auth()->id();
+            $movimentos->movimento = "Cliente Reembolsado";
+            $movimentos->objecto = "Encomenda";
+            $movimentos->codigo = $encomenda->id;
+            $movimentos->category = "Encomenda";
+            $movimentos->save();
+
+            return redirect()->back()->with('success', 'Reembolso Confirmado');
+            
+        }
     }
 }

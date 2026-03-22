@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIONANDRE - COMPANY</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+            font-family: sans-serif;
+            color: black;
+        }
+
+        header{
+            width: 100%;
+            height: 15vh;
+            border: 1px solid black;
+            padding: 3%;
+        }
+
+        body{
+            height: 85vh;
+            width: 100dvw;
+        }
+
+        main{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .div-main{
+            width: 60%;
+            height: 70%;
+            padding: 2%;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: aliceblue;
+        }
+
+        .divSub-main{
+            height: 50%;
+            width: 100%;
+            display: flex;
+        }
+
+        .image{
+            width: 40%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        img{
+            width: 100%;
+            height: 100%;
+        }
+
+        .text{
+            width: 90%;
+            height: 100%;
+            padding: 5%;
+        }
+
+        form{
+            width: 60%;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 5%;
+            padding: 2%;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        button{
+            background-color: red;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 2%;
+        }
+
+        @media(max-width: 768px){
+
+            header{
+                padding: 10%;
+            }
+
+            .div-main, form{
+                width: 90%;
+            }
+
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h3><a href="{{ route('loja') }}">Voltar</a></h3>
+    </header>
+
+    @if (session('success'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgb(133, 249, 133), rgb(161, 247, 161), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%;">
+            <h3>{{ session('success') }}</h3>
+        </div>
+        
+    @elseif(session('error'))
+
+        <div style="width: 100%; height: 10vh; background: linear-gradient(97deg, rgba(239, 106, 106, 1), rgba(241, 145, 145, 1), transparent, transparent);
+        border-radius: 5px; margin: 10px; padding: 2%;">
+            <h3>{{ session('error') }}</h3>
+        </div>
+
+    @endif
+
+    <main>
+
+        <div class="div-main">
+
+            <div class="divSub-main">
+                <div class="image">
+                    <img src="{{ asset('imagens/img_product/'.$produto->image) }}" alt="Imagem do Produto">
+                </div>
+
+                <div class="text" style="width: 60%;">
+                    <h3>Código: {{ $produto->id }}</h3>
+                    <h3>Produto: {{ $produto->name }}</h3>
+                    <h3>Preço: {{ number_format($produto->price, 2, ',','.') }}kz</h3>
+                    <h3>Categoria: {{ $produto->categoria->name }}</h3>
+                    <h3>Gênero: {{ $produto->genero }}</h3>
+                    <h3>Quantidade: {{ $produto->quantity }}</h3>
+                </div>
+            </div>
+            
+            <div class="divSub-main">
+                <div class="text" style="text-align: center;">
+                    <h2>Descrição Do Produto</h2>
+                    <br>
+                    <h3> {{ $produto->description }} </h3>
+                </div>
+            </div>
+        
+        </div>
+        
+        @if (Auth::user()->role != 'cliente')
+            
+            <form action="{{ route('destroy', $produto->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+
+                <label for="nota">Porquê vai eliminar este produto?</label>
+                <textarea name="nota" id="nota" style="height: 10vh;" required></textarea>
+
+                <button type="submit" onclick="return confirm('Tem certeza que deseja eliminar este produto?')">Eliminar</button>
+
+            </form>
+            
+        @endif
+
+    </main>
+</body>
+</html>

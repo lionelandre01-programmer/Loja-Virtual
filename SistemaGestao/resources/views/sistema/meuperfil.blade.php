@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, goldenrod 0%, #c3a70aff 100%);
+            background-color: #e6eaed;
             min-height: 100vh;
             padding: 20px;
         }
@@ -380,12 +380,12 @@
                     {{ auth()->user()->email }}
                 </div>
                 <div class="profile-actions">
-                    <button class="btn btn-primary" onclick="toggleEditMode()">✏️ Editar Perfil</button>
+                    <button class="btn btn-primary" id="btn-edit" onclick="toggleEditMode()">✏️ Editar Perfil</button>
                     <a href="{{ route('logout') }}" onclick="return confirm('Deseja Sair?')" class="btn btn-danger">🚪 Sair</a>
 
                     @if (Auth()->user()->role != 'cliente')
                         <a href="{{ route('dashboard') }}" class="btn btn-danger" style="background-color: goldenrod;">📊 DashBoard</a>
-                        <a href="{{ route('movimento') }}" class="btn btn-danger" style="background-color: goldenrod;">🧾 Movimentos</a>
+                        <a href="{{ route('movimento') }}" class="btn btn-danger" style="background-color: #062f39;">🧾 Movimentos</a>
                     @endif
                 </div>
             </div>
@@ -465,7 +465,7 @@
 
                     <div id="editActions" class="form-actions" style="display: none;">
                         <button type="submit" class="btn btn-save" onclick="return confirm('Deseja actualizar seus dados?')">💾 Guardar Alterações</button>
-                        <button type="button" class="btn btn-cancel" onclick="toggleEditCancel()">❌ Cancelar</button>
+                        <button type="button" class="btn btn-cancel" onclick="toggleEditMode()">❌ Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -522,29 +522,38 @@
             const editActions = document.getElementById('editActions');
             const inputs = form.querySelectorAll('input:not(#created_at)');
             const selects = form.querySelector('select');
-            
-            inputs.forEach(input => {
-                input.disabled = false;
-            });
+            const button = document.querySelector('#btn-edit');
 
-            selects.disabled = false;
-            
-            editActions.style.display = editActions.style.display === 'none' ? 'flex' : 'none';
-        }
+            button.classList.toggle('press');
 
-        function toggleEditCancel() {
-            const form = document.getElementById('profileForm');
-            const editActions = document.getElementById('editActions');
-            const inputs = form.querySelectorAll('input:not(#created_at)');
-            const selects = form.querySelector('select');
-            
-            inputs.forEach(input => {
-                input.disabled = true;
-            });
+            if (button.classList.contains('press')){
 
-            selects.disabled = true;
+                inputs.forEach(input => {
+                    input.disabled = false;
+                });
+
+                selects.disabled = false;
+                
+                editActions.style.display = editActions.style.display === 'none' ? 'flex' : 'none';
+
+                button.innerText = 'Editando...✏️';
+                button.style.backgroundColor = '#252527';
+
+            }else{
+
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+
+                selects.disabled = true;
+                
+                editActions.style.display = editActions.style.display === 'none' ? 'flex' : 'none';
+
+                button.innerText = '✏️ Editar Perfil';
+                button.style.backgroundColor = '#667eea';
+            }
             
-            editActions.style.display = editActions.style.display === 'none' ? 'flex' : 'none';
+            
         }
 
     </script>

@@ -45,6 +45,24 @@
             justify-content: space-evenly;
             padding: 2%;
             border-radius: 8px;
+            animation: formAni 1s infinite alternate;
+            transition: all 0.9s ease-in-out;
+        }
+
+        form:hover{
+            cursor: pointer;
+            background-color: aliceblue;
+            box-shadow: 0 0 15px 20px #e6eaed;
+            border-color: skyblue;
+        }
+
+        @keyframes formAni {
+            from{
+                transform: translateX(-10px);
+            }
+            to{
+                transform: translateX(10px);
+            }
         }
 
         form input, form select{
@@ -99,24 +117,24 @@
     @endif
 
     <main>
-        <h1 style="margin-bottom: 1rem;">CADASTRAR-SE</h1>
+        <h1 style="margin-bottom: 1rem; color: #1c2a33;">CADASTRAR-SE</h1>
         <form action="{{ route('registrar.post') }}" method="POST">
             @csrf
-            <label for="first_name">Primeiro Nome</label>
-            <input type="text" name="first_name" id="first_name" required>
+            <label for="firstName">Primeiro Nome</label>
+            <input type="text" name="first_name" id="firstName" onchange="maiusculo()" required>
             
-            <label for="last_name">Último Nome</label>
-            <input type="text" name="last_name" id="last_name" required>
+            <label for="lastName">Último Nome</label>
+            <input type="text" name="last_name" id="lastName" onchange="maiusculo()" required>
 
             <label for="phone">Telefone</label>
             <input type="number" name="phone" id="phone" max="999999999" required>
 
-            <label for="email">E-Mail</label>
-            <input type="email" name="email" id="email" required>
+            <label for="yourEmail">E-Mail</label>
+            <input type="email" name="email" id="yourEmail" required>
 
             @if (Auth::check() or !$user)
-                <label for="role">Função</label>
-                <select name="role" id="role">
+                <label for="yourRole">Função</label>
+                <select name="role" id="yourRole">
                     <option value="cliente">Cliente</option>
                     <option value="funcionario">Simples Funcionário</option>
                     <option value="gestor">Gestor</option>
@@ -126,17 +144,22 @@
                 </select>
             @endif
 
-            <label for="password">Palavra-Passe</label>
-            <input type="password" name="password" id="password" required>
+            <span id="erroSenha" style="height: auto; width: auto; border: none;"></span>
+            <label for="senha">Palavra-Passe</label>
+            <input type="password" name="password" id="senha" onkeyup="senhaForte()" required>
 
+            <span id="coincidir" style="height: auto; width: auto; border: none;"></span>
             <label for="password_confirm">Confirmar Palavra-Passe</label>
-            <input type="password" name="password_confirm" id="password_confirm" required>
+            <input type="password" name="password_confirm" id="confirmSenha" onkeyup="coincidirSenha()" required>
 
             <div style="margin-top: 1%;">
-                 <input type="submit" value="Cadastrar-se" style="background-color: aliceblue; border: 1px solid black;">
+                <input type="submit" value="Cadastrar-se" style="background-color: aliceblue; border: 1px solid black;" id="buttonSubmit">
                 <input type="reset" value="Cancelar" style="background-color: whitesmoke; border: 1px solid black;">
             </div>
         </form>
     </main>
+
+    <script src="{{ asset('script.js') }}"></script>
+
 </body>
 </html>

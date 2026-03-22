@@ -80,11 +80,11 @@
 
                     <tr>
                         <td>{{ $movimento->movimento }}</td>
-                        <td class="category">{{ $movimento->User->first_name }}</td>
+                        <td class="category">{{ $movimento->User->first_name }} {{ $movimento->User->last_name }}</td>
                         <td class="category">{{ $movimento->objecto }}</td>
                         <td>
-                            <button style="padding: 1% 3%; border: 1px solid black; background-color: gold; border-radius: 5px;" class="alter">
-                                <a href="{{ route('movimentoDetalhes', $movimento->id) }}">Dados</a>
+                            <button style="padding: 1% 10%; border: 1px solid black; background-color: gold; border-radius: 2px;" class="alter">
+                                <a href="{{ route('movimentoDetalhes', $movimento->id) }}" style="font-size: 1rem;">📃 Ver</a>
                             </button>
                         </td>
                     </tr>

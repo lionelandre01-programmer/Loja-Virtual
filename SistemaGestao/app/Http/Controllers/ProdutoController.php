@@ -27,7 +27,7 @@ class ProdutoController extends Controller
             $totalEncomendas = Encomenda::count();
 
             // Receita Total (soma de todos os totais das encomendas)
-            $receitaTotal = Encomenda::sum('total');
+            $receitaTotal = Encomenda::where('estado', '!=', 'reembolsado')->sum('total');
 
             // Total de Clientes (usuários únicos com encomendas)
             $totalClientes = User::where('role', 'cliente')->count();
@@ -73,6 +73,12 @@ class ProdutoController extends Controller
     {
 
         $produtos = Produto::all();
+        return view('produto/produto', ['produtos' => $produtos]);
+    }
+
+    public function maioresPrecos()
+    {
+        $produtos = Produto::orderBy('price', 'desc')->get();
         return view('produto/produto', ['produtos' => $produtos]);
     }
 
@@ -196,20 +202,28 @@ class ProdutoController extends Controller
 
         return redirect()->route('loja');
     }
+
+    public function delete($id)
+    {
+        $produto = Produto::find($id);
+        return view('produto/delete', ['produto' => $produto]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $produto = Produto::find($id);
 
         $movimentos = new Movimento;
         $movimentos->codigo = $produto->id;
         $movimentos->category = "Produto";
+        $movimentos->nota = $request->nota;
         $movimentos->user_id = Auth()->id();
         $movimentos->movimento = "Produto Deletado";
         $movimentos->objecto = $produto->name;
-        $movimentos-save();
+        $movimentos->save();
 
         $produto->delete();
         return redirect()->route('loja');
@@ -418,5 +432,12 @@ class ProdutoController extends Controller
         })->orWhere('category','vestido')->where('genero','feminino')->get();
         return view('produto/feminino', ['produtos' => $produtos]);
     }
+
+    public function index_API()
+    {
+        $produtos = Produto::all();
+        return response()->json($produtos);
+    }
+
 
 }
