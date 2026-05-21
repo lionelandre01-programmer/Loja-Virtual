@@ -11,10 +11,26 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class ProdutoController
+ *
+ * Controlador responsável pela lógica relacionada a produtos e à loja.
+ * Fornece métodos para listar, criar, editar, atualizar e remover produtos,
+ * além de filtros por género/categoria e o dashboard administrativo.
+ *
+ * Métodos importantes:
+ * - dashboard(): mostra estatísticas e itens para o painel administrativo.
+ * - loja(), loja filters: exibe lista de produtos na loja pública.
+ * - create(), store(), edit(), update(), destroy(): CRUD de produtos.
+ * - index_API(): retorna JSON com todos os produtos.
+ */
 class ProdutoController extends Controller
 {
     /**
-     * Função que traz os dados para o dashboard
+        * Mostra o dashboard administrativo com métricas do sistema.
+        *
+        * Calcula totais (produtos, encomendas, receita, clientes), lista encomendas
+        * recentes e produtos populares para exibição no painel.
      */
     public function dashboard()
     {
@@ -59,7 +75,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Função que leva para a home
+        * Renderiza a view da página inicial do sistema (painel/home).
      */
     public function index()
     {
@@ -67,7 +83,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Função que leva para a loja
+        * Exibe a listagem pública de produtos (loja).
      */
     public function loja()
     {
@@ -83,7 +99,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Função que leva para o formulário de cadastro de produto
+        * Mostra o formulário para criar um novo produto (seleção de categorias).
      */
     public function create()
     {
@@ -92,7 +108,8 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Função que armazena o produto na base de dados
+        * Valida e persiste um novo produto, processando upload de imagem e
+        * registando um movimento (log) associado ao produto criado.
      */
     public function store(Request $request)
     {
@@ -133,7 +150,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+        * Mostra a página de detalhe de um produto identificado por `$id`.
      */
     public function show($id)
     {
@@ -142,7 +159,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+        * Exibe o formulário para editar um produto existente.
      */
     public function edit($id)
     {
@@ -152,7 +169,8 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+        * Actualiza os dados do produto indicado por `$id`, processa novo
+        * upload de imagem se fornecido e regista alterações em `Movimento`.
      */
     public function update(Request $request, $id)
     {
@@ -210,7 +228,7 @@ class ProdutoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+        * Remove um produto da base de dados, guardando um registo em `Movimento`.
      */
     public function destroy(Request $request, $id)
     {
@@ -433,6 +451,9 @@ class ProdutoController extends Controller
         return view('produto/feminino', ['produtos' => $produtos]);
     }
 
+    /**
+     * Endpoint API que retorna todos os produtos em formato JSON.
+     */
     public function index_API()
     {
         $produtos = Produto::all();

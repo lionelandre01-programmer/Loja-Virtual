@@ -7,6 +7,19 @@ use App\Models\Movimento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UserController
+ *
+ * Controlador para gerir utilizadores: registo, autenticação e perfil.
+ * Contém métodos para criar utilizadores (com regras de roles), login/logout
+ * e edição do perfil do utilizador autenticado.
+ *
+ * Métodos principais:
+ * - store_user(Request): cria um novo utilizador com validações básicas.
+ * - logar(Request): efectua autenticação via `Auth::attempt`.
+ * - logout(): termina sessão do utilizador.
+ * - showProfile(): exibe o perfil do utilizador autenticado.
+ */
 class UserController extends Controller
 {
     /**
@@ -19,7 +32,10 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Cria um novo utilizador.
+     *
+     * Valida duplicidade de email e confirmação de password; atribui roles
+     * conforme regras internas e regista um movimento quando administradores são criados.
      */
     public function store_user(Request $request)
     {
@@ -113,7 +129,9 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Autentica um utilizador com `email` e `password`.
+     *
+     * Usa `Auth::attempt` e redireciona para a rota pretendida em caso de sucesso.
      */
     public function logar(Request $request)
     {
@@ -140,7 +158,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the user profile page.
+     * Mostra a página de perfil do utilizador autenticado.
      */
     public function showProfile()
     {
@@ -150,7 +168,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Actualiza os dados do perfil do utilizador autenticado com os dados do pedido.
      */
     public function edit(Request $request, User $user)
     {

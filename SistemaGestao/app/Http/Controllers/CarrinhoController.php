@@ -10,10 +10,16 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class CarrinhoController
+ *
+ * Lógica do carrinho de compras: adicionar, listar, alterar quantidades e
+ * remover itens. Mantém a totalização do carrinho e cria/atualiza `Carrinho`.
+ */
 class CarrinhoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+        * Exibe o carrinho do utilizador: itens activos e o total associado.
      */
     public function index()
     {
@@ -40,7 +46,8 @@ class CarrinhoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+        * Adiciona um produto ao carrinho do utilizador autenticado. Cria o
+        * carrinho se ainda não existir e previne duplicação do mesmo produto.
      */
     public function adicionar(Request $request)
     {
@@ -80,9 +87,9 @@ class CarrinhoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function alterForm($id)
+        * Mostra o formulário para alterar a quantidade de um item no carrinho.
+        */
+        public function alterForm($id)
     {
         $produto = Produto::find($id);
         $carrinho = Carrinho::where('user_id', Auth()->id())->first();
@@ -95,9 +102,9 @@ class CarrinhoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function alter(Request $request)
+        * Atualiza a quantidade de um item no carrinho e ajusta o total.
+        */
+        public function alter(Request $request)
     {
         $carrinho = Carrinho::where('user_id', Auth()->id())->first();
         $produto = Produto::find($request->produto);
@@ -111,7 +118,7 @@ class CarrinhoController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Remove um item do carrinho identificado por `$id`.
      */
     public function destroy($id)
     {

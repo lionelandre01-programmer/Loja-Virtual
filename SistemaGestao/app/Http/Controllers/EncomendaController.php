@@ -12,10 +12,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
+/**
+ * Class EncomendaController
+ *
+ * Gerencia o ciclo de vida das encomendas: criação a partir do carrinho,
+ * visualização, cancelamento, marcação como enviado/entregue e reembolso.
+ * Cria registos em `Movimento` para auditoria em operações relevantes.
+ */
 class EncomendaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+        * Lista encomendas. Para administradores lista todas; para cliente lista
+        * apenas as encomendas do utilizador autenticado.
      */
     public function index()
     {
@@ -33,7 +41,9 @@ class EncomendaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+        * Cria uma nova encomenda a partir do carrinho do utilizador autenticado.
+        * Move os itens do carrinho para `EncomendaItem`, ajusta stock e regista
+        * um movimento de encomenda.
      */
     public function create(Request $request)
     {
@@ -100,7 +110,7 @@ class EncomendaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+        * Mostra a factura/visualização detalhada de uma encomenda pelo seu `$id`.
      */
     public function show($id)
     {
@@ -146,6 +156,7 @@ class EncomendaController extends Controller
 
         }else {
 
+            // Marca a encomenda como enviada e regista o movimento correspondente.
             $encomenda->estado = 'enviado';
             $encomenda->save();
 
@@ -172,6 +183,7 @@ class EncomendaController extends Controller
 
         }else {
 
+            // Marca a encomenda como entregue e regista o movimento correspondente.
             $encomenda->estado = 'entregue';
             $encomenda->save();
 
@@ -198,6 +210,7 @@ class EncomendaController extends Controller
 
         }else {
 
+            // Marca a encomenda como reembolsada e regista o movimento.
             $encomenda->estado = 'reembolsado';
             $encomenda->save();
 

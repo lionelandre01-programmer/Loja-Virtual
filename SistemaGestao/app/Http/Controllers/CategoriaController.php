@@ -7,10 +7,16 @@ use App\Models\Movimento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class CategoriaController
+ *
+ * Controlador para gestão de categorias de produto (CRUD básico).
+ * Inclui criação, listagem e registo de movimentos ao criar categorias.
+ */
 class CategoriaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra o formulário de criação de categoria.
      */
     public function create()
     {
@@ -18,7 +24,7 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Persiste uma nova categoria na base de dados e regista o movimento.
      */
     public function store(Request $request)
     {
@@ -39,7 +45,7 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Lista todas as categorias disponíveis para gestão.
      */
     public function show()
     {

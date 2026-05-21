@@ -317,6 +317,12 @@ Este projeto está sob licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 ---
 
+## Autor
+
+Desenvolvido por Lionel Cristóvão André
+
+---
+
 ## 🚀 Roadmap Futuro
 
 - [ ] Integração de pagamentos (Stripe, PayPal)
@@ -339,4 +345,7 @@ Este projeto está sob licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 ---
 
-**Versão 1.0** | Desenvolvido com ❤️ para moda
+**Versão 1.2** | Desenvolvido com ❤️ para moda
+**Status do Projeto**: Em desenvolvimento (em pausa no momento) 🚧
+
+**Última atualização**: Maio de 2026

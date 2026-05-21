@@ -59,3 +59,68 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Sobre este Projeto
+
+Projeto: Loja-Virtual (Sistema de Gestão)
+
+Aplicação simples de e-commerce desenvolvida com Laravel que inclui:
+- Gestão de produtos (`Produto`), com imagens em `public/imagens/img_product`.
+- Categorias (`Categoria`) para classificação de produtos.
+- Carrinho de compras (`Carrinho`, `CarrinhoItem`) vinculado a sessão ou utilizador.
+- Encomendas/pedidos (`Encomenda`, `EncomendaItem`) com estado e total.
+- Registos de movimentos/atividades (`Movimento`) para auditoria funcional.
+
+## Funcionalidades principais
+
+- Listagem pública de produtos e filtragem por género/categoria.
+- Painel administrativo com dashboard (totais, encomendas recentes, produtos populares).
+- Upload de imagens dos produtos (salvas em `public/imagens/img_product`).
+- Endpoints API básicos (ex.: `ProdutoController::index_API` retorna JSON de produtos).
+
+## Estrutura importante
+
+- `app/Models/` — modelos principais: `Produto`, `Categoria`, `Carrinho`, `Encomenda`, `Movimento`.
+- `app/Http/Controllers/` — controllers que implementam lógica da loja e do sistema.
+- `resources/views/` — views Blade para frontend (páginas de loja, produto, painel).
+- `public/imagens/` — imagens públicas (subpastas por categoria e `img_product` para produtos).
+- `database/migrations/` — definições das tabelas (produtos, carrinhos, encomendas, movimentos).
+
+## Setup rápido (desenvolvimento)
+
+1. Instalar dependências PHP:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+2. Configurar base de dados em `.env` e executar migrations:
+
+```bash
+php artisan migrate
+```
+
+3. Criar link simbólico para storage (se usar storage):
+
+```bash
+php artisan storage:link
+```
+
+4. Instalar dependências JS e compilar assets (Vite):
+
+```bash
+npm install
+npm run dev
+```
+
+5. Aceder à aplicação em `http://localhost` (ou conforme configuração do seu servidor).
+
+## Observações e dicas
+
+- As imagens dos produtos são guardadas em `public/imagens/img_product` e o nome do ficheiro é gerado no upload.
+- Campos importantes e relações estão documentados nos docblocks dos modelos em `app/Models`.
+- Para testes locais com dados fictícios, use os seeders em `database/seeders`.
+
+Se quiser, posso também gerar documentação mais detalhada (ex.: UML simples, endpoints API listados, ou anotações Zicht/Swagger). 
