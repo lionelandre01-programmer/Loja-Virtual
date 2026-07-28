@@ -211,7 +211,7 @@ class ProdutoController extends Controller
 
             if ($original[$key] != $value){
                 
-                $movimentos->update = ($movimento->update ?? "") . " : De {$original[$key]} para $value "; 
+                $movimentos->update = ($movimentos->update ?? "") . " : De {$original[$key]} para $value "; 
             }
 
         }
